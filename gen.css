@@ -1,0 +1,220 @@
+html {
+	margin: 0 auto;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	background: #eee;
+}
+body {
+	margin: 0 auto;
+	width: 700px;
+	height: 100%;
+	background: #f6f6f6;
+	display: table;
+	font: italic 100% Georgia,serif;
+}
+body.gen {
+	font: normal 100% 'Times new roman',times,serif;
+}
+body>div {
+	vertical-align: middle;
+	display: table-cell;
+}
+body.gen>div {
+	padding-bottom: 38%;
+}
+h1 {
+	font: bold 200% "Trebuchet MS",sans-serif;
+	margin: 3ex 0;
+	color: #a33b18;
+}
+h2 {
+	margin: 3em 1.55em 0;
+	padding: 0 .5ex;
+	text-align: left;
+	font: bold 130% "Trebuchet MS",sans-serif;
+	border-bottom: 1px dashed #3BA318;
+	color: #3BA318;
+}
+
+a {
+	font-size: 75%;
+	text-decoration: none;
+	color: #07f;
+}
+a:visited {
+	color: #808;
+}
+a:hover, a:focus, a:active {
+	text-decoration: underline;
+}
+a.withTitle {
+	border-bottom: 1px dotted #07f;
+	text-decoration: none !important;
+}
+
+h2 a {
+	color: #183BA3;
+	font-size: 100%;
+	text-decoration: none !important;
+}
+h2 a:visited {
+	color: #3B18A3;
+}
+
+p, .p {
+	margin: 1em 3em;
+	text-align: justify;
+	font-style: normal;
+}
+p.quote {
+	text-align: right;
+	font-size: 85%;
+	font-style: italic;
+	margin-top: -1ex;
+}
+p a, .p a {
+	font-size: 100%;
+}
+.img td {
+	padding: 0;
+	text-align: right;
+}
+.img img {
+	vertical-align: top;
+	margin: 0;
+}
+
+dl.box {
+	margin: 2em auto;
+	padding: 1em 2em 1.5em;
+	background: #fff;
+	width: 320px;
+	border: 1px solid #000;
+	text-align: left;
+	font-style: normal;
+}
+dt {
+	font-weight: bold;
+}
+dl.overl dt {
+	float: left;
+}
+dl.box dd {
+	margin: 0 0 1em 40px;
+	padding: 0;
+}
+
+#leksje {
+	margin: 0;
+	padding: 0;
+	display: block;
+	list-style-type: none;
+}
+blockquote, #leksje li {
+	display: block;
+	list-style-type: none;
+	margin: 20px auto;
+	padding: 1em 0 1em 2em;
+	width: 320px;
+	background: #fff;
+	font: italic 130% Georgia,sans-serif;
+	text-align: left;
+}
+#leksje li {
+	width: 480px;
+}
+#leksje p {
+	margin: 1em 0 0;
+	text-align: left;
+}
+table {
+	border: none;
+	margin: 2em auto;
+}
+table caption {
+	font: bold 106% "Trebuchet MS",sans-serif;
+	margin: 3ex auto 2ex;
+	padding: 1ex;
+	color: #a33b18;
+	border-bottom: 1px dashed #a33b18;
+	width: 80px;
+}
+table td {
+	text-align: left;
+	vertical-align: top;
+	padding: 2px 1ex 8px;
+	border: 1px solid #000;
+	background: #fff;
+}
+table td.only {
+	border: none;
+	background: transparent;
+	padding: 1ex 0;
+	vertical-align: middle;
+}
+table th {
+	border: none;
+	padding: 1em;
+}
+table#copyright {
+	margin: 80px auto 40px;
+}
+table#copyright td, table#copyright th {
+	padding: 0;
+	background: transparent;
+	border: none;
+	text-align: left;
+	vertical-align: bottom;
+}
+table#copyright td {
+	font-size: 80%;
+	padding: 0 0 0 1em;
+}
+table#copyright th {
+	font-size: 200%;
+	color: #aaa;
+}
+ol, ol li {
+	margin: 0;
+	padding: 0;
+}
+ol li {
+	margin-left: 2em;
+	margin-right: 1em;
+}
+mo {
+	vertical-align: middle;
+	font: normal 220% "Times New Roman", serif;
+}
+
+pre {
+	margin: 1em 3em;
+	padding: 0 3ex;
+	text-align: left;
+	display: block;
+}
+pre.poe {
+	font: italic 100%/137% Georgia,serif;
+}
+code,pre,tt {
+	font: normal 100% Consolas,'Lucida console',monospace;
+}
+code strong {
+	color: #280;
+	font-weight: normal;
+}
+code em {
+	color: #028;
+	font-style: normal;
+}
+code span {
+	color: #900;
+}
+
+iframe {
+	border: 1px solid #F3DDC0;
+	margin: auto;
+	padding: 0;
+}

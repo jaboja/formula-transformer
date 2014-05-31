@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="pl"><head>
+	<meta charset="utf-8">
+	<title>Predicate calculus console</title>
+	<link rel="stylesheet" href="gen.css" type="text/css">
+	<!--<script src="peg-0.8.0.min.js" type="text/javascript"></script>-->
+	<script src="transformations_alt.js" type="text/javascript"></script>
+	<script src="console_alt.js" type="text/javascript"></script>
+	<script src="formula_alt.js" type="text/javascript"></script>
+	<style type="text/css">
+
+#all {
+	vertical-align: top;
+}
+#cmd {
+	min-height: 1.3em;
+	line-height: 1.3em;
+	padding: 2px 2px 2px 1em;
+	outline: none;
+	border: 2px solid #dda;
+	border-radius: 7px;
+	position: relative;
+	background: #fff;
+}
+#cmd:focus {
+	border-color: #ce5;
+}
+#cmd:before {
+	content: '>';
+	color: #888;
+	position: absolute;
+	left: 2px;
+}
+
+#console .cmd {
+	border-left: 3px double #ce5;
+	padding: 1px 1ex 1px 1ex;
+	border-radius: 7px 0 0 7px;
+	background: #fcfef5;
+	overflow: auto;
+}
+#console .error {
+	border-left: 3px double red;
+	padding: 1px 1ex 2px 1ex;
+	border-radius: 7px 0 0 7px;
+	background: #fef7f8;
+	color: red;
+}
+#console .error p {
+	font-style: italic;
+	font-size: 80%;
+	margin: 4px;
+}
+.hr, .hr * {
+	text-align: center;
+	vertical-align: top;
+}
+.varName:after {
+	content: ' =';
+}
+.varName {
+	color: #ad7;
+	margin: 0 .5ch 0 0;
+	padding: 0;
+	float: left;
+	border: none;
+	background: transparent;
+	font: inherit;
+	cursor: pointer;
+	overflow: auto;
+}
+.varName:hover {
+	color: #56f;
+}
+.eq {
+	color: #ad7;
+	padding: 0 .5ch;
+	background: #309;
+	border-radius: 8px;
+}
+.p.cmd {
+	text-align: left;
+}
+#cmd .capsule {
+	border-radius: 8px;
+	background: #ad7;
+	color: #fff;
+	padding: 0 5px 4px;
+	text-shadow: 2px 2px rgba(0,0,0,0.3);
+}
+em.var {
+	font-style: normal !important;
+	color: #d7a !important;
+}
+q, em.num {
+	font-style: italic !important;
+	color: #77d !important;
+}
+em.error-marker {
+    font-size: 80%;
+	border-radius: 8px;
+	background: #d56;
+	color: #fff;
+	padding: 0 6px 0 5px;
+	margin: 0 .5ex;
+	text-shadow: 2px 2px rgba(0,0,0,0.3);
+}
+
+	</style>
+</head><body onload="init()"><div id="all">
+
+<div id="console"></div>
+
+<div id="cmd" contenteditable class="p"></div>
+
+<ol type="I" style="display:none" id="axioms"><li id="PEANO">
+(x=x) and
+( ((x=y) and (y=z)) → (x=z) ) and
+((x=y) → (
+	(y=x) and
+	((x+1)=(y+1)) and
+	((x+z)=(y+z)) and
+	((z+x)=(z+y)) and
+	((x*z)=(y*z)) and
+	((z*x)=(z*y))
+)) and
+( ((x+1)=(y+1)) → (x=y) ) and
+!(0=(x+1)) and
+((x+0)=x) and
+( (x+(y+1))=((x+y)+1) ) and
+( (x*0)=0 ) and
+( (x*(y+1))=((x*y)+x) ) and
+!(x &lt; 0) and
+((x &lt; (y+1)) → (x &lt;= y)) and
+((x &lt;= y) ↔ ((x &lt; y) or (x=y)))
+</li><li id="BEALS">
+Ax.Ay.Az.Aa.Ab.Ac.((
+	(0 &lt; a) and (0 &lt; b) and (0 &lt; c) and
+	(2 &lt; x) and (2 &lt; y) and (2 &lt; z) and
+	((pow(a,x) + pow(b,y)) = pow(c,z))
+) → (
+	1 &lt; GCD(a,b,c)
+))
+</li><li id="LIMIT">
+Aa.Ae.((0 &lt; e) → (EN.(An.(((n>N) and (c(a, n) = (lim(a) + x))) → (abs(x) &lt; e)))))
+</li><li id="COLLATZ">
+Am.An.Aa.Ax.Ab.Ey.((
+	(n = (m + 1)) → (
+		((even(c(a, m)) and (c(a, m) = (x + x))) → (c(a, n) = x)) and
+		(!even(c(a, m)) → ( c(a, n) = ((c(a, m) * 3) + 1) ))
+	)
+) → (
+	(c(b, 0) > 0) → (y = lim(b))
+))
+</li><li id="PEANOCOLLATZ">
+Am.An.Aa.Ax.Ab.Ey.Evx.Evy.Evz.((
+(vx=vx) and
+( ((vx=vy) and (vy=vz)) → (vx=vz) ) and
+((vx=vy) → (
+	(vy=vx) and
+	((vx+1)=(vy+1)) and
+	((vx+vz)=(vy+vz)) and
+	((vz+vx)=(vz+vy)) and
+	((vx*vz)=(vy*vz)) and
+	((vz*vx)=(vz*vy))
+)) and
+( ((vx+1)=(vy+1)) → (vx=vy) ) and
+!(0=(vx+1)) and
+((vx+0)=vx) and
+( (vx+(vy+1))=((vx+vy)+1) ) and
+( (vx*0)=0 ) and
+( (vx*(vy+1))=((vx*vy)+vx) ) and
+!(vx &lt; 0) and
+((vx &lt; (vy+1)) → (vx &lt;= vy)) and
+((vx &lt;= vy) ↔ ((vx &lt; vy) or (vx=vy)))
+) -> ((
+	(n = (m + 1)) → (
+		((even(c(a, m)) and (c(a, m) = (x + x))) → (c(a, n) = x)) and
+		(!even(c(a, m)) → ( c(a, n) = ((c(a, m) * 3) + 1) ))
+	)
+) → (
+	(c(b, 0) > 0) → (y = lim(b))
+)))
+</li></ol><script type="text/javascript">
+	loadAxioms(document.getElementById('axioms'));
+</script>
+
+</div></body></html>

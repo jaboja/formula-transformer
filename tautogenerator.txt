@@ -1,0 +1,16 @@
+T:
+	~F
+	_ -> T
+	F -> _
+	T or _
+	_ or T
+	T and T
+F:
+	~T
+	T -> F
+	F or F
+	F and _
+	_ or F
+_:
+	T
+	F

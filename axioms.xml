@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ol type="I"><li id="Peano">
+(x=x) and
+( ((x=y) and (y=z)) → (x=z) ) and
+((x=y) → (
+	(y=x) and
+	((x+1)=(y+1)) and
+	((x+z)=(y+z)) and
+	((z+x)=(z+y)) and
+	((x*z)=(y*z)) and
+	((z*x)=(z*y))
+)) and
+( ((x+1)=(y+1)) → (x=y) ) and
+!(0=(x+1)) and
+((x+0)=x) and
+( (x+(y+1))=(x+y)+1 ) and
+( (x*0)=0 ) and
+( (x*(y+1))=((x*y)+x) ) and
+!(x &lt; 0) and
+</li></ol>
