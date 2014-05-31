@@ -1,18 +1,31 @@
 start
-	= sp f:(operacja / formula) sp { return f; }
+	= sp f:formula sp { return f; }
 
 operacja
-	= "#" f:[HSCDP]i sp a:nawias { return { t: 'o', f: f.toUpperCase(), a: a }; }
+	= "#" f:[HSCDPRJ]i sp a:nawias { return ['#', f.toUpperCase(), a]; }
 
 formula
-	= quantifier / binary / nonbinary
+	= operacja / quantifier / binary / nonbinary
 
 quantifier
+	= simpleQuantifier / cmpQuantifier
+
+simpleQuantifier
 	= q:quantifierSymbol sp v:(
 		v:variable sp '.' { return v; } /
 		"(" sp v:variable sp ")" { return v; } /
 		"[" sp v:variable sp "]" { return v; }
-	) sp a:qnonbinary { return { t: q, f: v.a, a: a }; }
+	) sp a:qnonbinary { return ['q', q, v[1], a]; }
+
+cmpQuantifier
+	= q:quantifierSymbol sp v:(
+		v:cmpVariable sp '.' { return v; } /
+		"(" sp v:cmpVariable sp ")" { return v; } /
+		"[" sp v:cmpVariable sp "]" { return v; }
+	) sp a:qnonbinary { return ['q', q, v[2][0][1], ['f', (q=='A') ? '->' : 'and', [v, a]]]; }
+
+cmpVariable
+	= a:variable sp operator:cmpOperator sp b:nonbinary { return ['f', operator, [a,b]]; }
 
 quantifierSymbol
 	= [A∀] { return 'A'; }
@@ -29,7 +42,7 @@ nawias
 	/ "{" sp s:formula sp "}" { return s; }
 
 functor
-	= name:$label sp "(" sp params:params sp ")" { return { f: name, a: params }; }
+	= name:label sp "(" sp params:params sp ")" { return ['f', name, params]; }
 
 params
 	= a:formula b:(("," sp f:formula { return f; })*) { return [a].concat(b); }
@@ -39,10 +52,10 @@ binary
 		var op = chain[0]; chain = chain[1];
 		var head = chain[0];
 		for(var i=1; i<chain.length; ++i)
-			head = { f: op, a: [head, chain[i]] };
+			head = ['f', op, [head, chain[i]]];
 		return head;
 	}
-	/ a:qnonbinary sp operator:operator sp b:qnonbinary { return { f: operator, a: [a,b] }; }
+	/ a:qnonbinary sp operator:operator sp b:qnonbinary { return ['f', operator, [a,b]]; }
 
 binaryChain
 	= a:qnonbinary chain:( sp and sp b:qnonbinary { return b; } )+ { return ['and', [a].concat(chain)]; }
@@ -51,7 +64,10 @@ binaryChain
 	/ a:qnonbinary chain:( sp mul sp b:qnonbinary { return b; } )+ { return ['*', [a].concat(chain)]; }
 
 operator
-	= impl / gte / lte / eq / neq / eqiv / xor / pow / minus / div / [<>]
+	= eqiv / impl / gte / lte / eq / neq / xor / pow / minus / div / [<>]
+
+cmpOperator
+	= eq / neq / gte / lte / [<>]
 
 impl = ("->" / "=>" / "→") { return '->'; }
 eqiv = ("<->" / "<=>" / "≡" / "↔") { return '<->'; }
@@ -69,19 +85,26 @@ div = [÷/:∕⁄➗] { return '/'; }
 pow = ("^" / "**") { return 'pow'; }
 
 unary
-	= operator:unaryoperator sp a:qnonbinary { return { f: operator, a: [a] }; }
+	= operator:unaryoperator sp a:qnonbinary { return ['f', operator, [a]]; }
 
 unaryoperator
 	= ([!¬~] / ('not' &[ ({])) { return '~'; } / [+-]
 
 variable
-	= variable:$("#"? label) { return { t: 'v', a: variable }; }
+	= variable:($"#"? label) { return ['v', variable.join('')]; }
 
 constant
-	= constant:(num / str) { return { t: 'c', a: constant }; }
+	= constant:(num / str) { return ['f', constant, []]; }
 
 label
-	= $([a-z]i [a-z0-9_]*)
+	= a:$([a-z]i+ ("_" [a-z]i+)?) b:label_index? { return (b != undefined) ? a+'_'+b : a; }
+
+label_index
+	= [_,]? n:(
+		"{" sp n:num sp "}" { return n; } /
+		"[" sp n:num sp "]" { return n; } /
+		n:num { return n; }
+	) { return n; }
 
 num
 	= digits:[0-9]+ { return parseInt(digits.join(""), 10); }

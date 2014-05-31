@@ -1,2 +1,2 @@
-formula-transformer
-===================
+Logical Formula Transformer
+===========================
